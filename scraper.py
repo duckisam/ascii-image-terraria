@@ -42,5 +42,4 @@ sprite = Aa.from_pillow_image(sprite_pil)
 
 
 print('heres a ' + str(items[rand_index]))
-sprite.to_file('fort.txt',  monochrome=True)
- 
+sprite.to_terminal()
