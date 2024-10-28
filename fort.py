@@ -1,0 +1,1 @@
+print('fort' in 'fortnite')
