@@ -1,1 +1,0 @@
-print('fort' in 'fortnite')
