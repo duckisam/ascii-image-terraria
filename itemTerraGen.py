@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup as Bs
 import requests
 from PIL import Image
-from ascii_magic import AsciiArt as Aa # i hate this thing i made my own
 import io
 import random as r
 import asciiCon as Ac
