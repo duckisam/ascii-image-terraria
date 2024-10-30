@@ -1,7 +1,26 @@
 import requests
 from bs4 import BeautifulSoup as Bs
+
+
+def extract_number(string):
+    num_str = ''
+    dot_found = False
+
+    for char in string:
+        if char.isdigit():
+            num_str += char
+        elif char == '.' and not dot_found:
+            num_str += char
+            dot_found = True
+        else:
+            if num_str:
+                break
+
+    return float(num_str) if num_str else None
+
 class terraScrape:
     def image_scrape():
+        
         re = requests.get('https://terraria.wiki.gg/wiki/Weapons') # defualt is weapons but there is also tools if you want them rember to remove some the last parts that it scrapes there are items
         soup = Bs(re.content, 'html.parser')
 
@@ -19,12 +38,30 @@ class terraScrape:
         f.writelines(items)
     # (temp[0].find('a')['href']).replace('/wiki/Weapons', '')
     def stats_scrape(item):
+        """"
+        Type:
+        Dmg:
+        KB:
+        Cc:
+        Ut:
+        Velo:
+        Rare:
+        Sell:
+        """
         re = requests.get('https://terraria.wiki.gg/wiki/' + item)
         soup = Bs(re.content, 'html.parser')
-        
-        temp = Bs(soup.find('table', attrs={'class' :'stat'}), 'html.parser')
-    
-        
+        page_data = soup.find('table', attrs={'class' :'stat'})
+        stats_data = page_data.find_all('tr')       
+        # print(stats_data[7].text)
+        stats = {'Damage': int(extract_number(stats_data[1].text)), 
+                 'KnockBack' : float(extract_number(stats_data[2].text)),
+                 'CritChance': int(extract_number(stats_data[3].text)),
+                 'UseTime'   : int(extract_number(stats_data[4].text)),
+                 'Velocity'  : int(extract_number(stats_data[5].text)),
+                 'Sell'      : stats_data[7].text[4:]
+                 }
+        for i in stats:
+            print(i, ':', stats[i]) 
         
 terraScrape.stats_scrape('Terra_Blade')
     
