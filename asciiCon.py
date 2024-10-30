@@ -14,8 +14,7 @@ class Ascii_Png_converter:
             else:
                 return 'not able to load bytes'
         width, height = image.size
-        
-        for y in range(height):  # Always process rows first to maintain image structure
+        for y in range(height):      
             for x in range(width):
                 for i in range(lAmount):
                     pixels_rgb = image.convert('RGB')

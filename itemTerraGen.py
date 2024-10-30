@@ -19,7 +19,7 @@ for item in items_ls:
 
 rand_index = r.randint(0, len(items))
 
-while True:
+while True: 
     try:
         re = requests.get('https://terraria.wiki.gg/wiki/'+ items[rand_index] )  
         break
@@ -40,3 +40,4 @@ for i in range(len(images)):
 sprite_data = requests.get('https://terraria.wiki.gg' + sprite_link).content
 
 Ac.Ascii_Png_converter.create_ascii_from_bytes(sprite_data, True, 2)
+
