@@ -51,10 +51,15 @@ class terraScrape:
         soup = Bs(re.content, 'html.parser')
         page_data = soup.find('table', attrs={'class' :'stat'})
         stats_data = page_data.find_all('tr')       
-        # print()
-        # print(stats_data[7].text)
-        stats = {'Type'      : str(stats_data[1].text[stats_data[1].text.index('(') + 1 : stats_data[1].text.rindex(')')]),
-                 'Damage'    : int(extract_number(stats_data[1].text)), 
+        stats = [['Type'],['Damage'],['KnockBack'],['CritChance'],['UseTime'],['Velocity'],['ToolTip'],['Sell']]
+        
+        # for i in stats:
+        #     for j in stats_data:
+        #         if 'Type' in i:
+                    
+        print(stats_data[7].text)
+        stats = {'Type'      : str(stats_data[1].text[stats_data[1].text.index('(') + 1 : stats_data[1].text.rindex(')') ] ),
+                 'Damage'    : int(extract_number(stats_data[1])), 
                  'KnockBack' : float(extract_number(stats_data[2].text)),
                  'CritChance': int(extract_number(stats_data[3].text)),
                  'UseTime'   : int(extract_number(stats_data[4].text)),
@@ -62,6 +67,4 @@ class terraScrape:
                  'Sell'      : stats_data[7].text[4:]
                  }
         return stats 
-        
-terraScrape.stats_scrape('Terra_Blade')
-    
+print(terraScrape.stats_scrape('Terra_Blade'))
