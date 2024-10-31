@@ -45,23 +45,23 @@ class terraScrape:
         Cc:
         Ut:
         Velo:
-        Rare:
         Sell:
         """
         re = requests.get('https://terraria.wiki.gg/wiki/' + item)
         soup = Bs(re.content, 'html.parser')
         page_data = soup.find('table', attrs={'class' :'stat'})
         stats_data = page_data.find_all('tr')       
+        # print()
         # print(stats_data[7].text)
-        stats = {'Damage': int(extract_number(stats_data[1].text)), 
+        stats = {'Type'      : str(stats_data[1].text[stats_data[1].text.index('(') + 1 : stats_data[1].text.rindex(')')]),
+                 'Damage'    : int(extract_number(stats_data[1].text)), 
                  'KnockBack' : float(extract_number(stats_data[2].text)),
                  'CritChance': int(extract_number(stats_data[3].text)),
                  'UseTime'   : int(extract_number(stats_data[4].text)),
                  'Velocity'  : int(extract_number(stats_data[5].text)),
                  'Sell'      : stats_data[7].text[4:]
                  }
-        for i in stats:
-            print(i, ':', stats[i]) 
+        return stats 
         
 terraScrape.stats_scrape('Terra_Blade')
     
