@@ -16,10 +16,15 @@ class Ascii_Png_converter:
         width, height = image.size
         
         for y in range(height):  # Always process rows first to maintain image structure
+            if y % 2 == 0:
+                continue
             for x in range(width):
+                if x % 2 == 0:
+                    continue
                 for i in range(lAmount):
                     pixels_rgb = image.convert('RGB')
                     r,g,b =pixels_rgb.getpixel((x,y))
+                    
                     
                     simga = (r+g+b)//3
                     

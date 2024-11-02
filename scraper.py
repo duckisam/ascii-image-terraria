@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup as Bs
 
+def find_anyIndex(lst, target, ind):
+    indices = [i for i, value in enumerate(lst) if value == target]
+    return indices[ind -1] if len(indices) > 1 else None
 
 def extract_number(string):
     num_str = ''
@@ -40,7 +43,7 @@ class terraScrape:
     def stats_scrape(item):
         """"
         Type:
-        Dmg:
+        Dmg:``
         KB:
         Cc:
         Ut:
@@ -56,10 +59,14 @@ class terraScrape:
         # for i in stats:
         #     for j in stats_data:
         #         if 'Type' in i:
-                    
-        print(stats_data[7].text)
-        stats = {'Type'      : str(stats_data[1].text[stats_data[1].text.index('(') + 1 : stats_data[1].text.rindex(')') ] ),
-                 'Damage'    : int(extract_number(stats_data[1])), 
+        if 'Ammo' in str(stats_data[1]):
+            stats_data.pop(1)
+        if 'Old-gen' in stats_data[1].text:
+            print('simga')
+            stats_data[1] = stats_data[1][find_anyIndex(stats_data[1],')', 2):]
+        
+        stats = {'Type'       : str(stats_data[1].text[stats_data[1].text.index('(') + 1 : stats_data[1].text.index(')') ] ),
+                 'Damage'    : int(extract_number(stats_data[1].text)), 
                  'KnockBack' : float(extract_number(stats_data[2].text)),
                  'CritChance': int(extract_number(stats_data[3].text)),
                  'UseTime'   : int(extract_number(stats_data[4].text)),
@@ -67,4 +74,5 @@ class terraScrape:
                  'Sell'      : stats_data[7].text[4:]
                  }
         return stats 
-print(terraScrape.stats_scrape('Terra_Blade'))
+    print(stats_scrape('Copper_Shortsword'))
+

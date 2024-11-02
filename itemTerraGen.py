@@ -5,7 +5,7 @@ from ascii_magic import AsciiArt as Aa # i hate this thing i made my own
 import io
 import random as r
 import asciiCon as Ac
-from scarpper import terraScrape
+#from scraper import terraScrape
 
 
 items_txt = open('item.txt', 'r')
@@ -17,7 +17,7 @@ for item in items_ls:
 
 
 
-rand_item = items[r.randint(0, len(items))]
+rand_item = 'Solar_Flare_Hammer'
 
 while True:
     try:
