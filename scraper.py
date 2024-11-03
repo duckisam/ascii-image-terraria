@@ -43,7 +43,7 @@ class terraScrape:
     def stats_scrape(item):
         """"
         Type:
-        Dmg:``
+        Dmg:
         KB:
         Cc:
         Ut:
@@ -54,25 +54,35 @@ class terraScrape:
         soup = Bs(re.content, 'html.parser')
         page_data = soup.find('table', attrs={'class' :'stat'})
         stats_data = page_data.find_all('tr')       
-        stats = [['Type'],['Damage'],['KnockBack'],['CritChance'],['UseTime'],['Velocity'],['ToolTip'],['Sell']]
         
         # for i in stats:
         #     for j in stats_data:
         #         if 'Type' in i:
+        if 'tooltip'in (stats_data[5].text).lower():
+            stats_data.pop(5)
+
         if 'Ammo' in str(stats_data[1]):
             stats_data.pop(1)
+
         if 'Old-gen' in stats_data[1].text:
-            print('simga')
-            stats_data[1] = stats_data[1][find_anyIndex(stats_data[1],')', 2):]
-        
-        stats = {'Type'       : str(stats_data[1].text[stats_data[1].text.index('(') + 1 : stats_data[1].text.index(')') ] ),
-                 'Damage'    : int(extract_number(stats_data[1].text)), 
+            sta = ''
+            sta += str(extract_number(stats_data[1].text))
+            sta += stats_data[1].text[find_anyIndex(stats_data[1].text, ')', 2) + 1:] #find_anyIndex(stats_data[1].text,')',2)
+            stats_data[1] = sta
+        else:
+            stats_data[1] = stats_data[1].text
+
+        if 'consumable' in stats_data[3].text.lower() or 'placeable' in stats_data[3].text.lower():
+            stats_data.pop(3)
+        #TODO make it so that all of the things have a n\a if the stats does not exist add back removed items
+        stats = {'Type'      : str(stats_data[1][stats_data[1].index('(') + 1 : stats_data[1].index(')') ] ),
+                 'Damage'    : int(extract_number(stats_data[1])), 
                  'KnockBack' : float(extract_number(stats_data[2].text)),
                  'CritChance': int(extract_number(stats_data[3].text)),
-                 'UseTime'   : int(extract_number(stats_data[4].text)),
-                 'Velocity'  : int(extract_number(stats_data[5].text)),
-                 'Sell'      : stats_data[7].text[4:]
+                 'UseTime'   : int(extract_number(stats_data[4].text))
                  }
+        try:
+            stats['Sell'] = stats_data[7].text[4:] 
+        except:
+            stats['Sell'] = 'n\\a'
         return stats 
-    print(stats_scrape('Copper_Shortsword'))
-

@@ -34,7 +34,7 @@ class Ascii_Png_converter:
                     else:
                         the_char = chars[int(simga/255 * (len(chars) - 1))]
                     
-                    ascii_image += f"\033[;38;2;{r + 20};{g + 20};{b + 20}m{the_char}\033[0m"
+                    ascii_image += f"\033[;38;2;{r};{g};{b}m{the_char}\033[0m"
             ascii_image += '\n'
         
                 
