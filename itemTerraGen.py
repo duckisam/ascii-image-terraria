@@ -8,7 +8,8 @@ import asciiCon as Ac
 #from scraper import terraScrape
 
 
-def itemGen(itemTXT):
+def itemGen(itemTXT, toItem= False):
+
     re = requests.get('https://terraria.wiki.gg/wiki/'+ itemTXT )  
     soup = Bs(re.content, 'html.parser')
     images = soup.find_all('img')
@@ -23,5 +24,9 @@ def itemGen(itemTXT):
     sprite_data = requests.get('https://terraria.wiki.gg' + sprite_link).content
 
     return Ac.Ascii_Png_converter.create_ascii_from_bytes(sprite_data, False, 2)
-
+    
 # print(terraScrape.stats_scrape(rand_item))
+
+
+
+
