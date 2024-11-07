@@ -18,8 +18,17 @@ def extract_number(string):
         else:
             if num_str:
                 break
-
     return float(num_str) if num_str else None
+
+def extract_attr(find_list, attrs_list): # finds a string with in a list of other string returns the first index of occuring or -1 if it is not in the list 
+    temp = ['' for i in range(len(attrs_list))]
+    for i in range(len(attrs_list) - 1):
+        for j in range(len(find_list) - 1):
+            if find_list[j] in attrs_list[j]:
+                temp[i] = attrs_list[j] 
+    return temp 
+
+    
 
 class terraScrape:
     def image_scrape():
@@ -41,6 +50,7 @@ class terraScrape:
         f.writelines(items)
     # (temp[0].find('a')['href']).replace('/wiki/Weapons', '')
     def stats_scrape(item):
+        stats_types = ['Type','Damage', 'KnockBack', 'Critical chance', 'Velocity', 'Tooltip', 'Rarity', 'Sell']
         """"
         Type:
         Dmg:
@@ -50,39 +60,24 @@ class terraScrape:
         Velo:
         Sell:
         """
+        
         re = requests.get('https://terraria.wiki.gg/wiki/' + item)
         soup = Bs(re.content, 'html.parser')
         page_data = soup.find('table', attrs={'class' :'stat'})
         stats_data = page_data.find_all('tr')       
-        
+        stats_text = []
+        for i in stats_data:
+            stats_text.append(str(i.text))
         # for i in stats:
         #     for j in stats_data:
         #         if 'Type' in i:
-        if 'tooltip'in (stats_data[5].text).lower():
-            stats_data.pop(5)
-
-        if 'Ammo' in str(stats_data[1]):
-            stats_data.pop(1)
-
-        if 'Old-gen' in stats_data[1].text:
-            sta = ''
-            sta += str(extract_number(stats_data[1].text))
-            sta += stats_data[1].text[find_anyIndex(stats_data[1].text, ')', 2) + 1:] #find_anyIndex(stats_data[1].text,')',2)
-            stats_data[1] = sta
-        else:
-            stats_data[1] = stats_data[1].text
-
-        if 'consumable' in stats_data[3].text.lower() or 'placeable' in stats_data[3].text.lower():
-            stats_data.pop(3)
+        
         #TODO make it so that all of the things have a n\a if the stats does not exist add back removed items
-        stats = {'Type'      : str(stats_data[1][stats_data[1].index('(') + 1 : stats_data[1].index(')') ] ),
-                 'Damage'    : int(extract_number(stats_data[1])), 
-                 'KnockBack' : float(extract_number(stats_data[2].text)),
-                 'CritChance': int(extract_number(stats_data[3].text)),
-                 'UseTime'   : int(extract_number(stats_data[4].text))
-                 }
-        try:
-            stats['Sell'] = stats_data[7].text[4:] 
-        except:
-            stats['Sell'] = 'n\\a'
-        return stats 
+        print(extract_attr(stats_text, stats_types))
+        #print(extract_attr(['']))
+       #try:
+        #   stats['Sell'] = stats_data[7].text[4:] 
+        #except:
+        #    stats['Sell'] = 'n\\a'
+        #return stats 
+terraScrape.stats_scrape('Chain_Gun')

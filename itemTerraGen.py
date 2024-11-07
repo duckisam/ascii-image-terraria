@@ -16,7 +16,7 @@ def itemGen(itemTXT, toItem= False):
     sprite_link = ''
     for i in range(len(images)):
         if itemTXT.lower() in str(images[i].get('src')).lower():
-            print(i, ' is the index and ', images[i].get('src'), 'is the link')
+   #         print(i, ' is the index and ', images[i].get('src'), 'is the link')
             sprite_link = images[i].get('src')
             break
     
